@@ -1,0 +1,15 @@
+Kundenverwaltung_.Controllers	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/Kundenverwaltung_/Controllers/ValuesController.cs	/^namespace Kundenverwaltung_.Controllers$/;"	namespace	line:11
+ValuesController	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/Kundenverwaltung_/Controllers/ValuesController.cs	/^    public class ValuesController : ApiController$/;"	class	line:13	namespace:Kundenverwaltung_.Controllers
+Get	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/Kundenverwaltung_/Controllers/ValuesController.cs	/^        public List<Kunde> Get()$/;"	method	line:16	class:Kundenverwaltung_.Controllers.ValuesController	signature:()
+Get	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/Kundenverwaltung_/Controllers/ValuesController.cs	/^        public string Get(int id)$/;"	method	line:54	class:Kundenverwaltung_.Controllers.ValuesController	signature:(int id)
+Post	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/Kundenverwaltung_/Controllers/ValuesController.cs	/^        public void Post([FromBody] Kunde temp)$/;"	method	line:92	class:Kundenverwaltung_.Controllers.ValuesController	signature:([FromBody] Kunde temp)
+Put	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/Kundenverwaltung_/Controllers/ValuesController.cs	/^        public void Put(int id, [FromBody] Kunde temp)$/;"	method	line:113	class:Kundenverwaltung_.Controllers.ValuesController	signature:(int id, [FromBody] Kunde temp)
+Delete	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/Kundenverwaltung_/Controllers/ValuesController.cs	/^        public void Delete(int id)$/;"	method	line:133	class:Kundenverwaltung_.Controllers.ValuesController	signature:(int id)
+express	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/routes/api.js	/^var express = require('express');$/;"	variable	line:1
+router	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/routes/api.js	/^var router = express.Router();$/;"	variable	line:2
+apiService	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/routes/api.js	/^var apiService = require('..\/services\/apiService');$/;"	variable	line:3
+constructor	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/services/apiService.js	/^  constructor() {$/;"	function	line:7
+authenticate	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/services/apiService.js	/^  authenticate() {$/;"	function	line:10
+greet	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/services/apiService.js	/^  greet(req, res, next) {$/;"	function	line:14
+getInstruments	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/services/apiService.js	/^  getInstruments(req, res, next) {$/;"	function	line:24
+getCustomer	/Users/nico.koeppe/Documents/Development/AWE_Instrumentenverleih/gateway/services/apiService.js	/^  getCustomer() {$/;"	function	line:84

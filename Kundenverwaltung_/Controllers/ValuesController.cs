@@ -16,7 +16,7 @@ namespace Kundenverwaltung_.Controllers
         public List<Kunde> Get()
         {
             List<Kunde> temp = new List<Kunde>();
-            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id=root; Password=usbw";
+            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id=root; Password=";
             MySqlConnection connect = new MySqlConnection(connectionString);
             string sql_query = "SELECT * FROM kunden";
             MySqlCommand comm = new MySqlCommand(sql_query,connect);
@@ -72,7 +72,7 @@ namespace Kundenverwaltung_.Controllers
             Kunde neuerKunde = new Kunde();
             while (reader.Read())
             {
-                
+
                 neuerKunde.Id = Convert.ToInt32(reader.GetString(0));
                 neuerKunde.Vorname = reader.GetString(1);
                 neuerKunde.Name = reader.GetString(2);
@@ -91,7 +91,7 @@ namespace Kundenverwaltung_.Controllers
         // POST api/values
         public void Post([FromBody] Kunde temp)
         {
-          
+
             string connectionString = "Server=localhost; Database=instrumenteverleih; User Id=root; Password=usbw";
             MySqlConnection connect = new MySqlConnection(connectionString);
             string sql_query = $"INSERT INTO kunden (Name,Vorname,Ort,strasse,hausnummer,Telefonnummer) VALUES ('{temp.Name}','{temp.Vorname}','{temp.Ort}','{temp.Strasse}','{temp.Hausnummer}','{temp.Telefonnummer}')";
@@ -99,14 +99,14 @@ namespace Kundenverwaltung_.Controllers
 
             try
             {
-                comm.Connection.Open(); 
+                comm.Connection.Open();
                 comm.ExecuteReader();
             }
             catch(Exception e)
             {
 
             }
-            
+
         }
 
         // PUT api/values/5
@@ -146,7 +146,7 @@ namespace Kundenverwaltung_.Controllers
             {
 
             }
-            
+
         }
     }
 }
