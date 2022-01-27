@@ -2,6 +2,9 @@ var express = require('express');
 var UserService = require('../src/userService');
 var router = express.Router();
 let service = new UserService();
+const jwt = require('jsonwebtoken');
+const SECRET = 'test_secret'
+
 /* GET users listing. */
 
 router.get('/', async function(req, res, next) {
@@ -13,23 +16,51 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-router.post('/authenticate', function(req, res, next) {
+router.post('/authenticate', async function(req, res, next) {
   try {
 
     const {
       user,
-      password
+      passwd
     } = req.body
 
-    if (user === undefined || password === undefined) throw "email or password is undefined"
+    if (user === undefined || passwd === undefined) throw "email or password is undefined"
 
 
-    // const ret = service.authenticate()
-    // 
-    res.send(ret);
+    const userFromDB = await service.functionWrapper(service.getUserByName, {
+      user: user,
+      that: service
+    });
+
+
+    if (service.validateUser({
+        username: user,
+        password: passwd
+      }, userFromDB)) {
+      const token = jwt.sign({
+        id: userFromDB.id,
+        name: userFromDB.username
+      }, SECRET, {
+        expiresIn: 60 * 60,
+      });
+      res.cookie('auth', token, {
+        httpOnly: true
+      });
+      res.send("authenticate successful")
+
+    } else {
+      console.log("user or password not valid")
+      throw {
+        msg: "username or password wrong"
+      }
+    }
+
 
   } catch (e) {
     console.error(e);
+    res.cookie('auth', "", {
+      httpOnly: true
+    });
     res.status(500).send(e)
   }
 });
@@ -67,6 +98,8 @@ router.post('/user', async (req, res) => {
     res.status(500).send(e);
   }
 });
+
+
 
 router.get('/user/:id', async function(req, res, next) {
   try {

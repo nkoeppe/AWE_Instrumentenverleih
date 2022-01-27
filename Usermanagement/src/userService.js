@@ -76,6 +76,30 @@ class UserService {
     }
   }
 
+  validateUser(request, user) {
+
+    if (request.username === user.username && request.password === user.password) {
+      return true;
+    } else {
+      return false
+    }
+  }
+
+  async getUserByName({
+    user,
+    that
+  }) {
+    try {
+      var sql = `SELECT * from user WHERE username = '${user}' LIMIT 1`;
+      let [rows] = await client.execute(sql);
+      user = rows[0]
+      return user
+
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
   async getSingleUser({
     id,
     that
