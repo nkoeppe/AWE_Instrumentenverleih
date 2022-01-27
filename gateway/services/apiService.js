@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const passport = require('passport')
+const axios = require('axios');
 const SECRET = 'test_secret'
 
 
@@ -81,26 +82,41 @@ class ApiService {
   }
 
 
-  async getCustomer() {
-    const result = await axios.get('http://localhost:3002/api/values')
-    console.log(result)
-    const mockReturn = [{
-      id: 0,
-      prename: "Nico",
-      surname: "Köppe",
-      adress: {
-        street: "fucking-awesome",
-        nr: 69,
-        plz: 42069,
-        city: "siiick"
+  async getCustomer(req, res, next) {
+    //const result = await axios.get('localhost:3002/api/values')
+    // const result = await axios.get("172.0.0.1:3002/api/values")
+    try {
+      //const result = await axios.get("http://127.0.0.1:3002/api/values")
+      const result = await axios.get("http://localhost:3002/api/values")
+
+      //const result = await axios({
+      //    url: "127.0.0.1:3002/api/values"
+      //  })
 
 
-      },
-      tarif: 2,
-      borrowed: 4,
-      overdue: 1
-    }]
-    return mockReturn
+      //console.log(result)
+      const mockReturn = [{
+        id: 0,
+        prename: "Nico",
+        surname: "Köppe",
+        adress: {
+          street: "fucking-awesome",
+          nr: 69,
+          plz: 42069,
+          city: "siiick"
+
+
+        },
+        tarif: 2,
+        borrowed: 4,
+        overdue: 1
+      }]
+      res.send(mockReturn)
+    } catch (e) {
+      console.log(e)
+      res.status(500).send(e)
+
+    }
   }
 
 

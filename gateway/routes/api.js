@@ -63,12 +63,10 @@ router.get('/instruments', passport.authenticate('jwt', {
   }),
   (...args) => service.getInstruments(...args));
 
-
 router.get('/customer', passport.authenticate('jwt', {
     session: false
   }),
   (...args) => service.getCustomer(...args));
-
 
 
 
