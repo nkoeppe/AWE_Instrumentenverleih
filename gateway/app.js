@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
@@ -34,7 +35,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+//app.use(function(req, res, next) {
+//  res.setHeader('Access-Control-Allow-Origin', '*');
+//})
+app.use(cors());
 
 
 app.use('/', indexRouter);
@@ -59,6 +63,7 @@ const opts = {
 passport.use(
   'jwt',
   new JwtStrategy(opts, (jwt_payload, done) => {
+
     try {
       console.log('jwt_payload', jwt_payload);
       done(null, jwt_payload);

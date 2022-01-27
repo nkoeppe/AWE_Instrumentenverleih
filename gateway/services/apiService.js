@@ -19,28 +19,65 @@ class ApiService {
     }
   }
 
-  getInstruments(req, res, next) {
 
-    const mockReturn = [{
-      id: 0,
-      name: "trompete",
-      borrowed: 6,
-      available: 14,
-      price: 69.99
-    }, {
-      id: 1,
-      name: "tuba",
-      borrowed: 1,
-      available: 23,
-      price: 42.00
-    }, {
-      id: 3,
-      name: "schlagzeug",
-      borrowed: 9,
-      available: 3,
-      price: 199.69
-    }]
-    res.send(mockReturn)
+
+  getInstruments(req, res, next) {
+    try {
+      console.log("test")
+
+      const mockReturn = [{
+        ID: 0,
+        Name: "trompete",
+        HerstellerFK: 1,
+        Preis: 14,
+        Ausgeliehen: true
+      }, {
+        ID: 1,
+        Name: "tuba",
+        HerstellerFK: 1,
+        Preis: 23,
+        Ausgeliehen: true
+      }, {
+        ID: 2,
+        Name: "tuba",
+        HerstellerFK: 1,
+        Preis: 23,
+        Ausgeliehen: false
+      }, {
+        ID: 3,
+        Name: "schlagzeug",
+        HerstellerFK: 2,
+        Preis: 199.69,
+        Ausgeliehen: false
+      }, {
+        ID: 4,
+        Name: "schlagzeug",
+        HerstellerFK: 2,
+        Preis: 199.99,
+        Ausgeliehen: true
+      }, {
+        ID: 5,
+        Name: "trompete",
+        HerstellerFK: 1,
+        Preis: 14,
+        Ausgeliehen: true
+      }, {
+        ID: 6,
+        Name: "trompete",
+        HerstellerFK: 1,
+        Preis: 14,
+        Ausgeliehen: false
+      }]
+
+      var result = {}
+      for (const instrument of mockReturn) {
+        console.log(instrument)
+      }
+      res.send(mockReturn)
+
+    } catch (e) {
+      res.status(500).send(e)
+    }
   }
 
 
