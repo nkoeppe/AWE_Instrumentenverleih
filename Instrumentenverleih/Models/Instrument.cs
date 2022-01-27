@@ -17,10 +17,11 @@ namespace Instrumentenverleih.Models
         public Hersteller Hersteller { get => hersteller; set => hersteller = value; }
         public double Preis { get => preis; set => preis = value; }
         public bool Ausgeliehen { get => ausgeliehen; set => ausgeliehen = value; }
+        public int Id { get => id; set => id = value; }
 
         public Instrument()
         {
-            id = 0;
+            Id = 0;
             name = "";
             hersteller = new Hersteller();
             preis = 0;
@@ -29,7 +30,7 @@ namespace Instrumentenverleih.Models
 
         public Instrument(int id, string name, Hersteller hersteller, double preis, bool ausgeliehen)
         {
-            this.id = id;
+            this.Id = id;
             this.name = name;
             this.hersteller = hersteller;
             this.preis = preis;
