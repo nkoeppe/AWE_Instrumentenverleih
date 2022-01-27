@@ -64,6 +64,7 @@ router.get('/instruments', passport.authenticate('jwt', {
   (...args) => service.getInstruments(...args));
 
 
+<<<<<<< HEAD
 router.get('/customer', function(req, res, next) {
   try {
     const ret = service.getCustomer();
@@ -73,6 +74,14 @@ router.get('/customer', function(req, res, next) {
     res.status(500).send(e)
   }
 })
+=======
+router.get('/customer', passport.authenticate('jwt', {
+    session: false
+  }),
+  (...args) => service.getCustomer(...args));
+
+
+>>>>>>> Test
 
 
 

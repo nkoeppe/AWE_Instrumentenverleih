@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using MySql.Data.MySqlClient;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json;
-using System.Data.SqlClient;
-using System.Data.Sql;
+using MySql.Data;
+
 
 namespace Kundenverwaltung_.Controllers
 {
@@ -16,21 +16,20 @@ namespace Kundenverwaltung_.Controllers
         public List<Kunde> Get()
         {
             List<Kunde> temp = new List<Kunde>();
-            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = "SELECT * FROM kunde";
-            SqlCommand command = new SqlCommand(sql_query, conn);
-
+            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id=root; Password=";
+            MySqlConnection connect = new MySqlConnection(connectionString);
+            string sql_query = "SELECT * FROM kunden";
+            MySqlCommand comm = new MySqlCommand(sql_query,connect);
             try
             {
-                command.Connection.Open();
+                connect.Open();
 
             }
             catch
             {
 
             }
-            SqlDataReader reader = command.ExecuteReader();
+            MySqlDataReader reader = comm.ExecuteReader();
             while (reader.Read())
             {
                 Kunde neuerKunde = new Kunde();
@@ -47,105 +46,107 @@ namespace Kundenverwaltung_.Controllers
 
 
             reader.Close();
-            conn.Close();
+            connect.Close();
             return temp;
         }
 
         // GET api/values/5
         public string Get(int id)
         {
-            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = $"SELECT * FROM kunde WHERE Id= {id}";
-            SqlCommand command = new SqlCommand(sql_query, conn);
+            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id=root; Password=usbw";
+            MySqlConnection connect = new MySqlConnection(connectionString);
+            string sql_query = $"SELECT * FROM kunden WHERE Id= {id}";
+            MySqlCommand comm = new MySqlCommand(sql_query, connect);
 
             try
             {
-                command.Connection.Open();
+                comm.Connection.Open();
 
             }
-            catch
+            catch(Exception e)
             {
 
             }
-            SqlDataReader reader = command.ExecuteReader();
+            MySqlDataReader reader = comm.ExecuteReader();
 
             Kunde neuerKunde = new Kunde();
-            neuerKunde.Id = Convert.ToInt32(reader.GetString(0));
-            neuerKunde.Vorname = reader.GetString(1);
-            neuerKunde.Name = reader.GetString(2);
-            neuerKunde.Ort = reader.GetString(3);
-            neuerKunde.Strasse = reader.GetString(4);
-            neuerKunde.Hausnummer = reader.GetString(5);
-            neuerKunde.Telefonnummer = reader.GetString(6);
+            while (reader.Read())
+            {
+
+                neuerKunde.Id = Convert.ToInt32(reader.GetString(0));
+                neuerKunde.Vorname = reader.GetString(1);
+                neuerKunde.Name = reader.GetString(2);
+                neuerKunde.Ort = reader.GetString(3);
+                neuerKunde.Strasse = reader.GetString(4);
+                neuerKunde.Hausnummer = reader.GetString(5);
+                neuerKunde.Telefonnummer = reader.GetString(6);
+            }
 
             string temp = JsonConvert.SerializeObject(neuerKunde);
             reader.Close();
-            conn.Close();
+            connect.Close();
             return temp;
         }
 
         // POST api/values
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Kunde temp)
         {
-            Kunde temp = JsonConvert.DeserializeObject<Kunde>(value);
-            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = "INSERT INTO Kunde ";
-            SqlCommand command = new SqlCommand(sql_query, conn);
+
+            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id=root; Password=usbw";
+            MySqlConnection connect = new MySqlConnection(connectionString);
+            string sql_query = $"INSERT INTO kunden (Name,Vorname,Ort,strasse,hausnummer,Telefonnummer) VALUES ('{temp.Name}','{temp.Vorname}','{temp.Ort}','{temp.Strasse}','{temp.Hausnummer}','{temp.Telefonnummer}')";
+            MySqlCommand comm = new MySqlCommand(sql_query, connect);
 
             try
             {
-                command.Connection.Open();
-
+                comm.Connection.Open();
+                comm.ExecuteReader();
             }
-            catch
+            catch(Exception e)
             {
 
             }
-            command.ExecuteReader();
+
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Kunde temp)
         {
-            Kunde temp = JsonConvert.DeserializeObject<Kunde>(value);
-            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = "INSERT INTO Kunde ";
-            string sql_query2 = "INSERT INTO Ort";
-            SqlCommand command = new SqlCommand(sql_query, conn);
+            string connectionString = "Server=localhost; Database=instrumenteverleih; User Id=root; Password=usbw";
+            MySqlConnection connect = new MySqlConnection(connectionString);
+            string sql_query = $"UPDATE Kunden SET Name = '{temp.Name}', Vorname = '{temp.Vorname}', Ort = '{temp.Ort}', strasse = '{temp.Strasse}', hausnummer = '{temp.Hausnummer}', Telefonnummer = '{temp.Telefonnummer}' WHERE ID={id}";
+            MySqlCommand comm = new MySqlCommand(sql_query, connect);
 
             try
             {
-                command.Connection.Open();
+                comm.Connection.Open();
+                comm.ExecuteReader();
 
             }
-            catch
+            catch(Exception e)
             {
 
             }
-            command.ExecuteReader();
         }
 
         // DELETE api/values/5
         public void Delete(int id)
         {
             string connectionString = "Server=localhost; Database=instrumenteverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = $"DELETE Kunde WHERE Id= {id}  ";
-            SqlCommand command = new SqlCommand(sql_query, conn);
+            MySqlConnection connect = new MySqlConnection(connectionString);
+            string sql_query = $"DELETE FROM Kunden WHERE ID="+id;
+            MySqlCommand comm = new MySqlCommand(sql_query, connect);
 
             try
             {
-                command.Connection.Open();
-
+                comm.Connection.Open();
+                comm.ExecuteReader();
             }
-            catch
+            catch(Exception e)
             {
 
             }
-            command.ExecuteReader();
+
         }
     }
 }
