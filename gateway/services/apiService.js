@@ -81,7 +81,7 @@ class ApiService {
   }
 
 
-  getCustomer() {
+  async getCustomer() {
     const result = await axios.get('http://localhost:3002/api/values')
     console.log(result)
     const mockReturn = [{
