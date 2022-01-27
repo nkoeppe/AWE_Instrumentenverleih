@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const passport = require('passport')
+const axios = require('axios');
 const SECRET = 'test_secret'
 
 
@@ -81,13 +82,10 @@ class ApiService {
   }
 
 
-  getCustomer() {
-<<<<<<< HEAD
-
-=======
-    const result = await axios.get('http://localhost:3002/api/values')
-    console.log(result)
->>>>>>> Test
+  async getCustomer(req, res, next) {
+    //const result = await axios.get('localhost:3002/api/values')
+    const result = await axios.get("http://localhost:3002/api/values")
+    //console.log(result)
     const mockReturn = [{
       id: 0,
       prename: "Nico",
@@ -104,7 +102,8 @@ class ApiService {
       borrowed: 4,
       overdue: 1
     }]
-    return mockReturn
+    res.send(mockReturn)
+
   }
 
 
