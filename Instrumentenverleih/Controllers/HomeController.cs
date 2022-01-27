@@ -5,8 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json;
-using System.Data.SqlClient;
-using System.Data.Sql;
+using MySqlConnector;
 using Instrumentenverleih.Models;
 
 namespace Instrumentenverleih.Controllers
@@ -14,46 +13,59 @@ namespace Instrumentenverleih.Controllers
     public class HomeController : ApiController
     {
         // GET api/values
+        [Route("api/values")]
         public List<Instrument> Get()
         {
             List<Instrument> instrumentList = new List<Instrument>();
-            string connectionString = "Server=localhost; Database=instrumentenverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = "SELECT * FROM Instrument";
-            SqlCommand command = new SqlCommand(sql_query, conn);
+            string connectionString = "server=localhost;database=instrumentenverleih; user id=user;password=aaa333---???";
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            string sql_query = "SELECT * FROM instrument INNER JOIN hersteller ON instrument.herstellerFK = hersteller.id";
+            MySqlCommand command = new MySqlCommand(sql_query, conn);
 
             try
             {
                 command.Connection.Open();
 
             }
-            catch
+            catch(Exception e)
             {
 
             }
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                Instrument neuesInstrument = new Instrument();
-                neuesInstrument.Id = Convert.ToInt32(reader.GetString(0));
-                neuesInstrument.Name = reader.GetString(1);
-                //neuesInstrument.Hersteller = Convert.ToInt32(reader.GetString(2));
-                neuesInstrument.Preis = Convert.ToInt32(reader.GetString(3));
-                neuesInstrument.Ausgeliehen = Convert.ToBoolean(reader.GetString(3));
-                instrumentList.Add(neuesInstrument);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Instrument neuesInstrument = new Instrument();
+                    neuesInstrument.Id = Convert.ToInt32(reader.GetValue(0));
+                    neuesInstrument.Name = Convert.ToString(reader.GetValue(1));
+                    neuesInstrument.Preis = Convert.ToDouble(reader.GetValue(3));
+                    neuesInstrument.Ausgeliehen = Convert.ToBoolean(reader.GetValue(4));
+                    neuesInstrument.Hersteller.Id = Convert.ToInt32(reader.GetValue(5));
+                    neuesInstrument.Hersteller.Name = Convert.ToString(reader.GetValue(6));
+                    neuesInstrument.Hersteller.Plz = Convert.ToInt32(reader.GetValue(7));
+                    neuesInstrument.Hersteller.Ort = Convert.ToString(reader.GetValue(8));
+                    neuesInstrument.Hersteller.Strasse = Convert.ToString(reader.GetValue(9));
+                    instrumentList.Add(neuesInstrument);
+                }
+                reader.Close();
+                conn.Close();
             }
-            reader.Close();
-            conn.Close();
+            catch (Exception e)
+            {
+
+            }
             return instrumentList;
         }
 
         // GET api/values/5
+        [Route("api/values/{id}")]
         public string Get(int id)
         {
-            string connectionString = "Server=localhost; Database=instrumentenverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = $"SELECT * FROM Instrument WHERE Id= {id}";
-            SqlCommand command = new SqlCommand(sql_query, conn);
+            string connectionString = "server=localhost;database=instrumentenverleih; uid=user;password=aaa333---???";
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            string sql_query = $"SELECT * FROM Instrument INNER JOIN hersteller ON instrument.herstellerFK = hersteller.id WHERE Id= {id}";
+            MySqlCommand command = new MySqlCommand(sql_query, conn);
 
             try
             {
@@ -64,70 +76,103 @@ namespace Instrumentenverleih.Controllers
             {
 
             }
-            SqlDataReader reader = command.ExecuteReader();
+            string temp = "";
+            try
+            {
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Instrument neuesInstrument = new Instrument();
+                    neuesInstrument.Id = Convert.ToInt32(reader.GetValue(0));
+                    neuesInstrument.Name = Convert.ToString(reader.GetValue(1));
+                    neuesInstrument.Preis = Convert.ToDouble(reader.GetValue(3));
+                    neuesInstrument.Ausgeliehen = Convert.ToBoolean(reader.GetValue(4));
+                    neuesInstrument.Hersteller.Id = Convert.ToInt32(reader.GetValue(5));
+                    neuesInstrument.Hersteller.Name = Convert.ToString(reader.GetValue(6));
+                    neuesInstrument.Hersteller.Plz = Convert.ToInt32(reader.GetValue(7));
+                    neuesInstrument.Hersteller.Ort = Convert.ToString(reader.GetValue(8));
+                    neuesInstrument.Hersteller.Strasse = Convert.ToString(reader.GetValue(9));
+                    temp = JsonConvert.SerializeObject(neuesInstrument);
+                }
+                reader.Close();
+            }
+            catch(Exception e)
+            {
 
-            Instrument neuesInstrument = new Instrument();
-            neuesInstrument.Id = Convert.ToInt32(reader.GetString(0));
-            neuesInstrument.Name = reader.GetString(1);
-            //neuesInstrument.Hersteller = Convert.ToInt32(reader.GetString(2));
-            neuesInstrument.Preis = Convert.ToInt32(reader.GetString(3));
-            neuesInstrument.Ausgeliehen = Convert.ToBoolean(reader.GetString(3));
+            }
 
-            string temp = JsonConvert.SerializeObject(neuesInstrument);
-            reader.Close();
             conn.Close();
             return temp;
         }
 
         // POST api/values
+        [Route("api/values/")]
         public void Post([FromBody] string value)
         {
             Instrument temp = JsonConvert.DeserializeObject<Instrument>(value);
-            string connectionString = "Server=localhost; Database=instrumentenverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = "INSERT INTO Instrument";
-            SqlCommand command = new SqlCommand(sql_query, conn);
-
+            string connectionString = "server=localhost;database=instrumentenverleih; uid=user;password=aaa333---???";
+            MySqlConnection conn = new MySqlConnection(connectionString);
             try
             {
-                command.Connection.Open();
+                string sql_query = "INSERT INTO Hersteller (`ID`,`Name`, `PLZ`, `Ort`, `Straße/Nr.`) VALUES (NULL, '" + temp.Hersteller.Name + "', '" + temp.Hersteller.Plz + "', '" + temp.Hersteller.Ort + "', '" + temp.Hersteller.Strasse + "',)";
+                MySqlCommand command = new MySqlCommand(sql_query, conn);
+                sql_query = "INSERT INTO Instrument (`ID`,`Name`, `HerstellerFK`, `Preis`, `Ausgeliehen`) VALUES (NULL, '" + temp.Name + "', '" + command.LastInsertedId + "','" + temp.Preis + "','" + temp.Ausgeliehen + "' )";
+                command = new MySqlCommand(sql_query, conn);
+                try
+                {
+                    command.Connection.Open();
 
+                }
+                catch
+                {
+
+                }
+                command.ExecuteReader();
             }
-            catch
+            catch (Exception e)
             {
 
             }
-            command.ExecuteReader();
         }
 
         // PUT api/values/5
+        [Route("api/values/{id}")]
         public void Put(int id, [FromBody] string value)
         {
             Instrument temp = JsonConvert.DeserializeObject<Instrument>(value);
-            string connectionString = "Server=localhost; Database=instrumentenverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
-            string sql_query = "INSERT INTO Instrument";
-            SqlCommand command = new SqlCommand(sql_query, conn);
-
+            string connectionString = "server=localhost;database=instrumentenverleih; uid=user;password=aaa333---???";
+            MySqlConnection conn = new MySqlConnection(connectionString);
             try
             {
-                command.Connection.Open();
+                string sql_query = "INSERT INTO Hersteller (`ID`,`Name`, `PLZ`, `Ort`, `Straße/Nr.`) VALUES (NULL, '" + temp.Hersteller.Name + "', '" + temp.Hersteller.Plz + "', '" + temp.Hersteller.Ort + "', '" + temp.Hersteller.Strasse + "',)";
+                MySqlCommand command = new MySqlCommand(sql_query, conn);
+                sql_query = "INSERT INTO Instrument (`ID`,`Name`, `HerstellerFK`, `Preis`, `Ausgeliehen`) VALUES (NULL, '" + temp.Name + "', '" + command.LastInsertedId + "','" + temp.Preis + "','" + temp.Ausgeliehen + "' )";
+                command = new MySqlCommand(sql_query, conn);
+                try
+                {
+                    command.Connection.Open();
 
+                }
+                catch
+                {
+
+                }
+                command.ExecuteReader();
             }
-            catch
+            catch (Exception e)
             {
 
             }
-            command.ExecuteReader();
         }
 
         // DELETE api/values/5
+        [Route("api/values/{id}")]
         public void Delete(int id)
         {
-            string connectionString = "Server=localhost; Database=instrumentenverleih; User Id= root; Password=usbw";
-            SqlConnection conn = new SqlConnection(connectionString);
+            string connectionString = "server=localhost;database=instrumentenverleih; uid=user;password=aaa333---???";
+            MySqlConnection conn = new MySqlConnection(connectionString);
             string sql_query = $"DELETE Instrument WHERE Id= {id}";
-            SqlCommand command = new SqlCommand(sql_query, conn);
+            MySqlCommand command = new MySqlCommand(sql_query, conn);
 
             try
             {
