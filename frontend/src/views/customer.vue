@@ -56,17 +56,13 @@ export default {
   },
   mounted: async function() {
     try {
-      this.token = await axios
-        .post("http://localhost:3000/api/authenticate", {
-        "user": "nico",
-        "passwd" : "nico"
-        })
-        .then(res => res.data);
-        console.log(this.token)
+    if(this.$parent.authenticated === false) {
+        this.$router.replace({ name: "login" });
+    }
 
 
       this.customers = await axios
-        .get("http://localhost:3000/api/customer", { headers: {auth: this.token} })
+        .get("http://localhost:3000/api/customer", { headers: {auth: this.$parent.token} })
         .then(res => res.data);
 
       console.log(this.info);

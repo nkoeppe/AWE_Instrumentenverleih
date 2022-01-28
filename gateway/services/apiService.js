@@ -20,55 +20,22 @@ class ApiService {
     }
   }
 
+  /*
 
+    Gateway Service: http://localhost:3000
+    User Servcice: http://localhost:3001
+    Customer Service: http://localhost:3002
+    Instruments Service: http://localhost:3003
+
+    Kassen Service: (http://localhost:3004)
+
+  */
 
   getInstruments(req, res, next) {
     try {
       console.log("test")
+      //const result = await axios.get("http://localhost:3001/api/values")
 
-      /*  const mockReturn = [{
-          ID: 0,
-          Name: "Trompete",
-          HerstellerFK: 1,
-          Preis: 14,
-          Ausgeliehen: true
-        }, {
-          ID: 1,
-          Name: "tuba",
-          HerstellerFK: 1,
-          Preis: 23,
-          Ausgeliehen: true
-        }, {
-          ID: 2,
-          Name: "tuba",
-          HerstellerFK: 1,
-          Preis: 23,
-          Ausgeliehen: false
-        }, {
-          ID: 3,
-          Name: "schlagzeug",
-          HerstellerFK: 2,
-          Preis: 199.69,
-          Ausgeliehen: false
-        }, {
-          ID: 4,
-          Name: "schlagzeug",
-          HerstellerFK: 2,
-          Preis: 199.99,
-          Ausgeliehen: true
-        }, {
-          ID: 5,
-          Name: "trompete",
-          HerstellerFK: 1,
-          Preis: 14,
-          Ausgeliehen: true
-        }, {
-          ID: 6,
-          Name: "trompete",
-          HerstellerFK: 1,
-          Preis: 14,
-          Ausgeliehen: false
-        }]*/
       const mockReturn = [{
         ID: 0,
         Name: "Trompete",

@@ -50,20 +50,12 @@ export default {
   },
   mounted: async function() {
     try {
-      this.token = await axios
-        .post("http://localhost:3000/api/authenticate", {
-        "user": "nico",
-        "passwd" : "nico"
-        })
-        .then(res => res.data);
-        console.log(this.token)
 
-        this.info = await axios
-        .get("http://localhost:3000")
-        .then(res => res.data);
-        console.log(this.info)
+    if(this.$parent.authenticated === false) {
+        this.$router.replace({ name: "login" });
+    }
       this.instruments = await axios
-        .get("http://localhost:3000/api/instruments", { headers: {auth: this.token} })
+        .get("http://localhost:3000/api/instruments", { headers: {auth: this.$parent.token} })
         .then(res => res.data);
 
       console.log(this.info);

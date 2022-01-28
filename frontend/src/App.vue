@@ -2,7 +2,7 @@
 <div id="nav">
   <div id="app">
     <router-link to="/">Home</router-link> |
-    <router-link to="/instruments">Instrumente</router-link>
+    <router-link to="/instruments">Instrumente</router-link> |
     <router-link to="/customer">Kunden</router-link>
   </div>
   <router-view />
@@ -13,7 +13,18 @@
 <script>
 
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+          return {
+              authenticated: false,
+              token: ''
+          }},
+  mounted() {
+      if(this.authenticated === false) {
+          this.$router.replace({ name: "login" });
+      }
+  },
+
 }
 </script>
 
