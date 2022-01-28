@@ -3,6 +3,7 @@
   <div id="app">
     <router-link to="/">Home</router-link> |
     <router-link to="/instruments">Instrumente</router-link>
+    <router-link to="/customer">Kunden</router-link>
   </div>
   <router-view />
   </div>

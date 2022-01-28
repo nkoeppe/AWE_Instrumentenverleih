@@ -1,29 +1,36 @@
 <template>
   <div class="balance">
-    <h1>Übersicht über alle Instrumente</h1>
+    <h1>Übersicht über alle Kunden</h1>
 
-    <table id="firstTable" class="styled-table" v-if="instruments">
+    <table id="firstTable" class="styled-table" v-if="customers">
       <thead>
         <tr>
           <th>ID</th>
-          <th>Instrument</th>
-          <th>Ausgeliehen (Anzahl)</th>
-          <th>Auf Lager (Anzahl)</th>
-          <th>Preis pro Tag</th>
+          <th>Vorname</th>
+          <th>Nachname</th>
+          <th>Ort</th>
+          <th>Straße</th>
+          <th>Hausnummer</th>
+          <th>Telefonnummer</th>
+
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(instrument, i) in instruments" v-bind:key="instrument.ID">
+        <tr v-for="(customer) in customers" v-bind:key="customer.ID">
           <td>
-            {{ i }}
+            {{ customer.ID }}
           </td>
           <td>
-            {{ instrument.Name }}
+            {{ customer.Vorname }}
           </td>
-          <td>{{ instrument.Name }} </td>
-          <td>{{ instrument.FK }}</td>
+          <td>{{ customer.Name }} </td>
+          <td>{{ customer.Ort }}</td>
           <td>
-            {{ instrument.Preis }}
+            {{ customer.Strasse}}
+          </td><td>
+            {{ customer.Hausnummer}}
+          </td><td>
+            {{ customer.Telefonnummer}}
           </td>
         </tr>
       </tbody>
@@ -35,11 +42,10 @@
 import axios from "axios";
 
 export default {
-  name: "Instruments",
+  name: "Customer",
   data() {
     return {
-      instruments: null,
-      info: null,
+      customers: null,
       token : null
     };
   },
@@ -58,16 +64,13 @@ export default {
         .then(res => res.data);
         console.log(this.token)
 
-        this.info = await axios
-        .get("http://localhost:3000")
-        .then(res => res.data);
-        console.log(this.info)
-      this.instruments = await axios
-        .get("http://localhost:3000/api/instruments", { headers: {auth: this.token} })
+
+      this.customers = await axios
+        .get("http://localhost:3000/api/customer", { headers: {auth: this.token} })
         .then(res => res.data);
 
       console.log(this.info);
-      console.log(this.instruments);
+      console.log(this.customer);
     } catch (e) {
       console.error(`Z.81 ${e}`);
     }

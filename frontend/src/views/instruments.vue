@@ -13,17 +13,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(instrument, i) in instruments" v-bind:key="instrument.ID">
+        <tr v-for="(instrument) in instruments" v-bind:key="instrument.ID">
           <td>
-            {{ i }}
+            {{ instrument.ID }}
           </td>
           <td>
             {{ instrument.Name }}
           </td>
-          <td>{{ instrument.Name }} </td>
-          <td>{{ instrument.FK }}</td>
+          <td>{{ instrument.Ausgeliehen }} </td>
+          <td>{{ instrument.AufLager }}</td>
           <td>
-            {{ instrument.Preis }}
+            {{ instrument.Preis }} €
           </td>
         </tr>
       </tbody>
